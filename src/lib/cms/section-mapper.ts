@@ -8,6 +8,51 @@ export interface CmsSection {
   status?: string
 }
 
+function normalizeToken(value: unknown) {
+  return typeof value === 'string'
+    ? value.toLowerCase().trim().replace(/\s+/g, '_').replace(/-/g, '_')
+    : ''
+}
+
+function hasNonEmptyString(value: unknown) {
+  return typeof value === 'string' && value.trim().length > 0
+}
+
+function isSectionMatch(section: CmsSection, target: 'hero' | 'story' | 'values' | 'team' | 'cta' | 'contact_info') {
+  const type = normalizeToken(section.section_type)
+  const key = normalizeToken(section.section_key)
+  const content = section.content ?? {}
+
+  if (target === 'hero') {
+    return type === 'hero' || type === 'banner' || key.includes('hero') || key.includes('banner')
+  }
+
+  if (target === 'story') {
+    return type === 'story' || type === 'historia' || key.includes('story') || key.includes('historia')
+  }
+
+  if (target === 'values') {
+    return type === 'values' || type === 'valores' || key.includes('values') || key.includes('valor')
+  }
+
+  if (target === 'team') {
+    const hasMembersArray = Array.isArray(content.members)
+    const hasLegacyMembers = hasNonEmptyString(content.member_1_name) || hasNonEmptyString(content.member_2_name) || hasNonEmptyString(content.member_3_name)
+    return type === 'team' || type === 'equipe' || key.includes('team') || key.includes('equipe') || hasMembersArray || hasLegacyMembers
+  }
+
+  if (target === 'cta') {
+    return type === 'cta' || key.includes('cta') || key.includes('whatsapp')
+  }
+
+  if (target === 'contact_info') {
+    const hasContactFields = hasNonEmptyString(content.phone) || hasNonEmptyString(content.email) || hasNonEmptyString(content.address) || hasNonEmptyString(content.whatsapp) || hasNonEmptyString(content.map_url)
+    return type === 'contact_info' || type === 'contact' || type === 'contato' || key.includes('contact') || key.includes('contato') || key.includes('mapa') || hasContactFields
+  }
+
+  return false
+}
+
 function setIfString(map: Record<string, string>, key: string, value: unknown) {
   if (typeof value === 'string' && value.trim().length > 0) {
     map[key] = value
@@ -35,7 +80,7 @@ function mapHomeSection(map: Record<string, string>, section: CmsSection) {
   const content = section.content ?? {}
   copyLegacyShapedContent(map, content)
 
-  if (section.section_type === 'hero') {
+  if (isSectionMatch(section, 'hero')) {
     setIfString(map, 'hero_badge', content.badge)
     setIfString(map, 'hero_title', content.title)
     setIfString(map, 'hero_subtitle', content.subtitle)
@@ -75,7 +120,7 @@ function mapHomeSection(map: Record<string, string>, section: CmsSection) {
     })
   }
 
-  if (section.section_type === 'cta') {
+  if (isSectionMatch(section, 'cta')) {
     setIfString(map, 'cta_badge', content.badge)
     setIfString(map, 'cta_title', content.title)
     setIfString(map, 'cta_subtitle', firstString(content.description, content.subtitle))
@@ -90,13 +135,13 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
   const content = section.content ?? {}
   copyLegacyShapedContent(map, content)
 
-  if (section.section_type === 'hero') {
+  if (isSectionMatch(section, 'hero')) {
     setIfString(map, 'about_hero_badge', content.badge)
     setIfString(map, 'about_hero_title', content.title)
     setIfString(map, 'about_hero_subtitle', content.subtitle)
   }
 
-  if (section.section_type === 'story') {
+  if (isSectionMatch(section, 'story')) {
     setIfString(map, 'about_story_badge', content.badge)
     setIfString(map, 'about_story_title', content.title)
     const longContent = firstString(content.content)
@@ -123,7 +168,7 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     setIfString(map, 'about_story_image', firstString(content.image, content.image_url))
   }
 
-  if (section.section_type === 'values') {
+  if (isSectionMatch(section, 'values')) {
     setIfString(map, 'about_values_badge', content.badge)
     setIfString(map, 'about_values_title', content.title)
     const items = Array.isArray(content.items) ? content.items : []
@@ -138,7 +183,7 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     setIfString(map, 'about_card3_desc', firstString(third?.description, content.card_3_desc))
   }
 
-  if (section.section_type === 'team') {
+  if (isSectionMatch(section, 'team')) {
     setIfString(map, 'about_team_badge', content.badge)
     setIfString(map, 'about_team_title', content.title)
     setIfString(map, 'about_team_subtitle', content.subtitle)
@@ -180,7 +225,7 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     }
   }
 
-  if (section.section_type === 'cta') {
+  if (isSectionMatch(section, 'cta')) {
     setIfString(map, 'about_cta_title', content.title)
     setIfString(map, 'about_cta_subtitle', firstString(content.description, content.subtitle))
     setIfString(map, 'about_cta_btn', firstString(content.buttonText, content.button_text))
@@ -191,13 +236,13 @@ function mapContatoSection(map: Record<string, string>, section: CmsSection) {
   const content = section.content ?? {}
   copyLegacyShapedContent(map, content)
 
-  if (section.section_type === 'hero') {
+  if (isSectionMatch(section, 'hero')) {
     setIfString(map, 'contact_hero_badge', content.badge)
     setIfString(map, 'contact_hero_title', content.title)
     setIfString(map, 'contact_hero_subtitle', content.subtitle)
   }
 
-  if (section.section_type === 'contact_info') {
+  if (isSectionMatch(section, 'contact_info')) {
     setIfString(map, 'contact_phone', content.phone)
     setIfString(map, 'contact_email', content.email)
     setIfString(map, 'contact_address', content.address)
