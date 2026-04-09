@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { unstable_cache } from 'next/cache'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Award, Users, Target, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react'
@@ -41,16 +40,7 @@ async function canPreview(searchParams?: { preview?: string }) {
 
 async function getSobreData(searchParams?: { preview?: string }) {
   const includeDraft = await canPreview(searchParams)
-
-  if (process.env.NODE_ENV === 'development') {
-    return fetchSobreData(includeDraft)
-  }
-
-  if (!includeDraft) {
-    return getPublishedSobreData()
-  }
-
-  return fetchSobreData(true)
+  return fetchSobreData(includeDraft)
 }
 
 async function fetchSobreData(includeDraft: boolean) {
@@ -72,31 +62,13 @@ async function fetchSobreData(includeDraft: boolean) {
   return { content, sectionOrderMap }
 }
 
-const getPublishedSobreData = unstable_cache(
-  async () => fetchSobreData(false),
-  ['public-sobre-data-v2'],
-  { revalidate: 300, tags: ['public-sobre'] }
-)
-
-const getPublishedSobreSeo = unstable_cache(
-  async () => getCmsPageSeoWithFallback('sobre', {
-    includeDraft: false,
-    fallbackTitle: 'Sobre | Kaizen Soluções Imobiliárias',
-    fallbackDescription: 'Conheça a história da Kaizen Soluções Imobiliárias.',
-  }),
-  ['public-sobre-seo-v1'],
-  { revalidate: 300, tags: ['public-sobre-seo'] }
-)
-
 export async function generateMetadata({ searchParams }: { searchParams?: { preview?: string } }): Promise<Metadata> {
   const includeDraft = await canPreview(searchParams)
-  const seo = includeDraft
-    ? await getCmsPageSeoWithFallback('sobre', {
-      includeDraft: true,
-      fallbackTitle: 'Sobre | Kaizen Soluções Imobiliárias',
-      fallbackDescription: 'Conheça a história da Kaizen Soluções Imobiliárias.',
-    })
-    : await getPublishedSobreSeo()
+  const seo = await getCmsPageSeoWithFallback('sobre', {
+    includeDraft,
+    fallbackTitle: 'Sobre | Kaizen Soluções Imobiliárias',
+    fallbackDescription: 'Conheça a história da Kaizen Soluções Imobiliárias.',
+  })
 
   return {
     title: seo.title,

@@ -187,7 +187,13 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     setIfString(map, 'about_team_badge', content.badge)
     setIfString(map, 'about_team_title', content.title)
     setIfString(map, 'about_team_subtitle', content.subtitle)
-    const members = Array.isArray(content.members) ? content.members : []
+    const members = Array.isArray(content.members)
+      ? content.members
+      : Array.isArray(content.team_members)
+        ? content.team_members
+        : Array.isArray(content.members_list)
+          ? content.members_list
+          : []
     const hasStructuredMembers = members.some((member) => {
       if (!member || typeof member !== 'object') return false
       const row = member as Record<string, unknown>
@@ -243,12 +249,12 @@ function mapContatoSection(map: Record<string, string>, section: CmsSection) {
   }
 
   if (isSectionMatch(section, 'contact_info')) {
-    setIfString(map, 'contact_phone', content.phone)
-    setIfString(map, 'contact_email', content.email)
-    setIfString(map, 'contact_address', content.address)
-    setIfString(map, 'contact_hours', content.hours)
-    setIfString(map, 'contact_whatsapp', content.whatsapp)
-    setIfString(map, 'contact_map_url', content.map_url)
+    setIfString(map, 'contact_phone', firstString(content.phone, content.phone_number, content.telefone))
+    setIfString(map, 'contact_email', firstString(content.email, content.mail, content.email_address))
+    setIfString(map, 'contact_address', firstString(content.address, content.endereco))
+    setIfString(map, 'contact_hours', firstString(content.hours, content.business_hours, content.horario))
+    setIfString(map, 'contact_whatsapp', firstString(content.whatsapp, content.whatsapp_number))
+    setIfString(map, 'contact_map_url', firstString(content.map_url, content.mapUrl, content.mapa_url))
   }
 }
 

@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import { unstable_cache } from 'next/cache'
 import { MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
 import createServerClient from '@/lib/supabase/server'
 import { getCmsPageSeoWithFallback, getLegacyContentBlocksByPages, getSectionsByPageSlug, getSiteSettings } from '@/lib/cms/server'
@@ -22,16 +21,7 @@ async function canPreview(searchParams?: { preview?: string }) {
 
 async function getContatoData(searchParams?: { preview?: string }) {
   const includeDraft = await canPreview(searchParams)
-
-  if (process.env.NODE_ENV === 'development') {
-    return fetchContatoData(includeDraft)
-  }
-
-  if (!includeDraft) {
-    return getPublishedContatoData()
-  }
-
-  return fetchContatoData(true)
+  return fetchContatoData(includeDraft)
 }
 
 async function fetchContatoData(includeDraft: boolean) {
@@ -62,31 +52,13 @@ async function fetchContatoData(includeDraft: boolean) {
   return { content: fallback, sectionOrderMap, includeDraft }
 }
 
-const getPublishedContatoData = unstable_cache(
-  async () => fetchContatoData(false),
-  ['public-contato-data-v1'],
-  { revalidate: 300, tags: ['public-contato'] }
-)
-
-const getPublishedContatoSeo = unstable_cache(
-  async () => getCmsPageSeoWithFallback('contato', {
-    includeDraft: false,
-    fallbackTitle: 'Contato | Kaizen Soluções Imobiliárias',
-    fallbackDescription: 'Fale com a Kaizen Soluções Imobiliárias.',
-  }),
-  ['public-contato-seo-v1'],
-  { revalidate: 300, tags: ['public-contato-seo'] }
-)
-
 export async function generateMetadata({ searchParams }: { searchParams?: { preview?: string } }): Promise<Metadata> {
   const includeDraft = await canPreview(searchParams)
-  const seo = includeDraft
-    ? await getCmsPageSeoWithFallback('contato', {
-      includeDraft: true,
-      fallbackTitle: 'Contato | Kaizen Soluções Imobiliárias',
-      fallbackDescription: 'Fale com a Kaizen Soluções Imobiliárias.',
-    })
-    : await getPublishedContatoSeo()
+  const seo = await getCmsPageSeoWithFallback('contato', {
+    includeDraft,
+    fallbackTitle: 'Contato | Kaizen Soluções Imobiliárias',
+    fallbackDescription: 'Fale com a Kaizen Soluções Imobiliárias.',
+  })
 
   return {
     title: seo.title,
