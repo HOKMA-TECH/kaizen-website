@@ -143,23 +143,27 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     setIfString(map, 'about_team_title', content.title)
     setIfString(map, 'about_team_subtitle', content.subtitle)
     const members = Array.isArray(content.members) ? content.members : []
-    const hasStructuredMembers = members.length > 0
+    const hasStructuredMembers = members.some((member) => {
+      if (!member || typeof member !== 'object') return false
+      const row = member as Record<string, unknown>
+      return [row.name, row.role, row.creci, row.image].some((value) => typeof value === 'string' && value.trim().length > 0)
+    })
     const m1 = members[0] as Record<string, unknown> | undefined
     const m2 = members[1] as Record<string, unknown> | undefined
     const m3 = members[2] as Record<string, unknown> | undefined
     if (hasStructuredMembers) {
-      setIfString(map, 'about_team1_name', m1?.name)
-      setIfString(map, 'about_team1_role', m1?.role)
-      setIfString(map, 'about_team1_creci', m1?.creci)
-      setIfString(map, 'about_team1_image', m1?.image)
-      setIfString(map, 'about_team2_name', m2?.name)
-      setIfString(map, 'about_team2_role', m2?.role)
-      setIfString(map, 'about_team2_creci', m2?.creci)
-      setIfString(map, 'about_team2_image', m2?.image)
-      setIfString(map, 'about_team3_name', m3?.name)
-      setIfString(map, 'about_team3_role', m3?.role)
-      setIfString(map, 'about_team3_creci', m3?.creci)
-      setIfString(map, 'about_team3_image', m3?.image)
+      setIfString(map, 'about_team1_name', firstString(m1?.name, content.member_1_name))
+      setIfString(map, 'about_team1_role', firstString(m1?.role, content.member_1_role))
+      setIfString(map, 'about_team1_creci', firstString(m1?.creci, content.member_1_creci))
+      setIfString(map, 'about_team1_image', firstString(m1?.image, content.member_1_image))
+      setIfString(map, 'about_team2_name', firstString(m2?.name, content.member_2_name))
+      setIfString(map, 'about_team2_role', firstString(m2?.role, content.member_2_role))
+      setIfString(map, 'about_team2_creci', firstString(m2?.creci, content.member_2_creci))
+      setIfString(map, 'about_team2_image', firstString(m2?.image, content.member_2_image))
+      setIfString(map, 'about_team3_name', firstString(m3?.name, content.member_3_name))
+      setIfString(map, 'about_team3_role', firstString(m3?.role, content.member_3_role))
+      setIfString(map, 'about_team3_creci', firstString(m3?.creci, content.member_3_creci))
+      setIfString(map, 'about_team3_image', firstString(m3?.image, content.member_3_image))
     } else {
       setIfString(map, 'about_team1_name', content.member_1_name)
       setIfString(map, 'about_team1_role', content.member_1_role)
