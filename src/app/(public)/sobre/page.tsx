@@ -148,7 +148,7 @@ export default async function SobrePage({ searchParams }: { searchParams?: { pre
                   className="object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-[#0A2A66] text-white p-6 rounded-2xl shadow-xl"><p className="text-4xl font-bold">3+</p><p className="text-blue-200 text-sm">{c('about_story_years_label', 'Anos de mercado')}</p></div>
+              <div className="absolute -bottom-6 -left-6 bg-[#0A2A66] text-white p-6 rounded-2xl shadow-xl"><p className="text-4xl font-bold">{c('about_story_years', '3+')}</p><p className="text-blue-200 text-sm">{c('about_story_years_label', 'Anos de mercado')}</p></div>
               <div className="absolute -top-6 -right-6 bg-white border border-gray-100 p-4 rounded-2xl shadow-xl"><TrendingUp className="h-8 w-8 text-[#1E4ED8] mb-1" /><p className="text-[#0A2A66] font-bold text-xl">{c('about_story_sold', '500+')}</p><p className="text-gray-500 text-xs">{c('about_story_sold_label', 'Imóveis vendidos')}</p></div>
             </div>
           </div>

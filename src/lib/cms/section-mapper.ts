@@ -161,10 +161,10 @@ function mapSobreSection(map: Record<string, string>, section: CmsSection) {
     setIfString(map, 'about_story_bullet2', content.bullet_2)
     setIfString(map, 'about_story_bullet3', content.bullet_3)
     setIfString(map, 'about_story_bullet4', content.bullet_4)
-    setIfString(map, 'about_story_years', content.years_value)
-    setIfString(map, 'about_story_years_label', content.years_label)
-    setIfString(map, 'about_story_sold', content.sold_value)
-    setIfString(map, 'about_story_sold_label', content.sold_label)
+    setIfString(map, 'about_story_years', firstString(content.years_value, content.about_story_years, content.years))
+    setIfString(map, 'about_story_years_label', firstString(content.years_label, content.about_story_years_label))
+    setIfString(map, 'about_story_sold', firstString(content.sold_value, content.about_story_sold, content.sold))
+    setIfString(map, 'about_story_sold_label', firstString(content.sold_label, content.about_story_sold_label))
     setIfString(map, 'about_story_image', firstString(content.image, content.image_url))
   }
 
