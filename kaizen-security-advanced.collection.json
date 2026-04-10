@@ -1,0 +1,117 @@
+{
+  "info": {
+    "_postman_id": "f9f64710-c7bc-4d94-aabc-d8b5ff7f3e58",
+    "name": "Kaizen - Security Advanced",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Advanced security probes: brute force, IDOR/BOLA, sensitive read, privilege escalation, and storage upload abuse."
+  },
+  "item": [
+    {
+      "name": "00 - Login User (Capture Token)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "apikey", "value": "{{supabaseAnonKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{userPassword}}\"\n}"
+        },
+        "url": {
+          "raw": "{{supabaseUrl}}/auth/v1/token?grant_type=password",
+          "host": ["{{supabaseUrl}}"],
+          "path": ["auth", "v1", "token"],
+          "query": [{ "key": "grant_type", "value": "password" }]
+        }
+      },
+      "event": [{"listen":"test","script":{"type":"text/javascript","exec":["pm.test('Login status should be 200', function () {","  pm.expect(pm.response.code).to.equal(200);","});","const json = pm.response.json();","pm.collectionVariables.set('userAccessToken', json.access_token);","pm.collectionVariables.set('userId', json.user && json.user.id ? json.user.id : '');","pm.test('Token and userId captured', function () {","  pm.expect(json.access_token).to.be.a('string').and.not.empty;","  pm.expect(json.user.id).to.be.a('string').and.not.empty;","});"]}}]
+    },
+    {
+      "name": "01 - Brute Force Probe (Invalid Password)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "apikey", "value": "{{supabaseAnonKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {"mode":"raw","raw":"{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{invalidPassword}}\"\n}"},
+        "url": {"raw":"{{supabaseUrl}}/auth/v1/token?grant_type=password","host":["{{supabaseUrl}}"],"path":["auth","v1","token"],"query":[{"key":"grant_type","value":"password"}]}
+      },
+      "event": [
+        {"listen":"prerequest","script":{"type":"text/javascript","exec":["const bad = `wrong-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;","pm.collectionVariables.set('invalidPassword', bad);"]}},
+        {"listen":"test","script":{"type":"text/javascript","exec":["pm.test('Invalid password should not authenticate', function () {","  pm.expect([400, 401, 429]).to.include(pm.response.code);","});","pm.test('No 5xx on brute-force probe', function () {","  pm.expect(pm.response.code).to.be.below(500);","});"]}}
+      ]
+    },
+    {
+      "name": "02 - User Enumeration Probe",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "apikey", "value": "{{supabaseAnonKey}}" },
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {"mode":"raw","raw":"{\n  \"email\": \"{{probeEmail}}\",\n  \"password\": \"any-invalid-password\"\n}"},
+        "url": {"raw":"{{supabaseUrl}}/auth/v1/token?grant_type=password","host":["{{supabaseUrl}}"],"path":["auth","v1","token"],"query":[{"key":"grant_type","value":"password"}]}
+      },
+      "event": [
+        {"listen":"prerequest","script":{"type":"text/javascript","exec":["const probe = `security-probe-${Date.now()}@example.com`;","pm.collectionVariables.set('probeEmail', probe);"]}},
+        {"listen":"test","script":{"type":"text/javascript","exec":["pm.test('Enumeration probe should fail auth', function () {","  pm.expect([400, 401, 429]).to.include(pm.response.code);","});","pm.test('Error should not reveal user existence details', function () {","  const body = pm.response.text();","  pm.expect(body).to.not.match(/user not found|email not found|does not exist|no such user/i);","});"]}}
+      ]
+    },
+    {
+      "name": "03 - IDOR Read Probe (Profiles)",
+      "request": {
+        "method": "GET",
+        "header": [{"key":"apikey","value":"{{supabaseAnonKey}}"},{"key":"Authorization","value":"Bearer {{userAccessToken}}"}],
+        "url": {"raw":"{{supabaseUrl}}/rest/v1/profiles?select=id,email,role&id=eq.{{otherUserId}}","host":["{{supabaseUrl}}"],"path":["rest","v1","profiles"],"query":[{"key":"select","value":"id,email,role"},{"key":"id","value":"eq.{{otherUserId}}"}]}
+      },
+      "event": [{"listen":"test","script":{"type":"text/javascript","exec":["const otherId = pm.variables.get('otherUserId') || pm.collectionVariables.get('otherUserId') || '';","const userId = pm.variables.get('userId') || pm.collectionVariables.get('userId') || '';","if (!otherId || !userId) {","  pm.test('IDOR probe skipped (set otherUserId and login first)', function () { pm.expect(true).to.equal(true); });","} else {","  pm.test('IDOR read should not expose another profile', function () {","    pm.expect([200, 206, 401, 403]).to.include(pm.response.code);","    if (pm.response.code === 200 || pm.response.code === 206) {","      const rows = pm.response.json();","      const leaked = Array.isArray(rows) && rows.some(r => r.id === otherId && r.id !== userId);","      pm.expect(leaked).to.equal(false);","    }","  });","}"]}}]
+    },
+    {
+      "name": "04 - IDOR Update Probe (Profiles)",
+      "request": {
+        "method": "PATCH",
+        "header": [{"key":"apikey","value":"{{supabaseAnonKey}}"},{"key":"Authorization","value":"Bearer {{userAccessToken}}"},{"key":"Content-Type","value":"application/json"},{"key":"Prefer","value":"return=representation"}],
+        "body": {"mode":"raw","raw":"{\n  \"full_name\": \"SECURITY_TEST_SHOULD_NOT_APPLY\"\n}"},
+        "url": {"raw":"{{supabaseUrl}}/rest/v1/profiles?id=eq.{{otherUserId}}&select=id,full_name,role","host":["{{supabaseUrl}}"],"path":["rest","v1","profiles"],"query":[{"key":"id","value":"eq.{{otherUserId}}"},{"key":"select","value":"id,full_name,role"}]}
+      },
+      "event": [{"listen":"test","script":{"type":"text/javascript","exec":["const otherId = pm.variables.get('otherUserId') || pm.collectionVariables.get('otherUserId') || '';","if (!otherId) {","  pm.test('IDOR update probe skipped (set otherUserId)', function () { pm.expect(true).to.equal(true); });","} else {","  pm.test('IDOR update must not succeed on another profile', function () {","    if ([200, 201, 204].includes(pm.response.code)) {","      const body = pm.response.text().trim();","      if (!body) return pm.expect(true).to.equal(true);","      const rows = pm.response.json();","      const changed = Array.isArray(rows) && rows.some(r => r.id === otherId);","      pm.expect(changed).to.equal(false);","      return;","    }","    pm.expect([400, 401, 403, 404, 409]).to.include(pm.response.code);","  });","}"]}}]
+    },
+    {
+      "name": "05 - Sensitive Table Read (contact_messages)",
+      "request": {
+        "method": "GET",
+        "header": [{"key":"apikey","value":"{{supabaseAnonKey}}"},{"key":"Authorization","value":"Bearer {{supabaseAnonKey}}"}],
+        "url": {"raw":"{{supabaseUrl}}/rest/v1/contact_messages?select=id,name,email,message","host":["{{supabaseUrl}}"],"path":["rest","v1","contact_messages"],"query":[{"key":"select","value":"id,name,email,message"}]}
+      },
+      "event": [{"listen":"test","script":{"type":"text/javascript","exec":["pm.test('Sensitive table should not be publicly readable', function () {","  if ([200, 206].includes(pm.response.code)) {","    const rows = pm.response.json();","    const hasData = Array.isArray(rows) && rows.length > 0;","    pm.expect(hasData).to.equal(false);","    return;","  }","  pm.expect([401, 403, 404]).to.include(pm.response.code);","});"]}}]
+    },
+    {
+      "name": "06 - Storage Upload Abuse Probe (text file)",
+      "request": {
+        "method": "POST",
+        "header": [{"key":"apikey","value":"{{supabaseAnonKey}}"},{"key":"Authorization","value":"Bearer {{userAccessToken}}"},{"key":"Content-Type","value":"text/plain"}],
+        "body": {"mode":"raw","raw":"security probe - text upload should be blocked for regular users"},
+        "url": {"raw":"{{supabaseUrl}}/storage/v1/object/blog-media/security-tests/{{timestamp}}.txt","host":["{{supabaseUrl}}"],"path":["storage","v1","object","blog-media","security-tests","{{timestamp}}.txt"]}
+      },
+      "event": [
+        {"listen":"prerequest","script":{"type":"text/javascript","exec":["pm.collectionVariables.set('timestamp', String(Date.now()));"]}},
+        {"listen":"test","script":{"type":"text/javascript","exec":["pm.test('Untrusted upload abuse should be blocked', function () {","  pm.expect(pm.response.code).to.not.be.within(200, 299);","});"]}}
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "https://imobkaizen.com.br" },
+    { "key": "supabaseUrl", "value": "https://YOUR_PROJECT.supabase.co" },
+    { "key": "supabaseAnonKey", "value": "YOUR_SUPABASE_ANON_KEY" },
+    { "key": "userEmail", "value": "" },
+    { "key": "userPassword", "value": "" },
+    { "key": "userAccessToken", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "otherUserId", "value": "" },
+    { "key": "invalidPassword", "value": "" },
+    { "key": "probeEmail", "value": "" },
+    { "key": "timestamp", "value": "" }
+  ]
+}

@@ -1,0 +1,51 @@
+name: Security Newman
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  baseline-security:
+    runs-on: ubuntu-latest
+    env:
+      BASE_URL: ${{ secrets.BASE_URL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      USER_EMAIL: ${{ secrets.SECURITY_USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.SECURITY_USER_PASSWORD }}
+      OTHER_USER_ID: ${{ secrets.SECURITY_OTHER_USER_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run baseline collection
+        run: |
+          npx newman run postman/kaizen-security.collection.json \
+            --env-var "baseUrl=${BASE_URL}" \
+            --env-var "supabaseUrl=${SUPABASE_URL}" \
+            --env-var "supabaseAnonKey=${SUPABASE_ANON_KEY}" \
+            --env-var "userEmail=${USER_EMAIL}" \
+            --env-var "userPassword=${USER_PASSWORD}"
+
+      - name: Run advanced collection
+        if: ${{ env.OTHER_USER_ID != '' }}
+        run: |
+          npx newman run kaizen-security-advanced.collection.json \
+            --env-var "baseUrl=${BASE_URL}" \
+            --env-var "supabaseUrl=${SUPABASE_URL}" \
+            --env-var "supabaseAnonKey=${SUPABASE_ANON_KEY}" \
+            --env-var "userEmail=${USER_EMAIL}" \
+            --env-var "userPassword=${USER_PASSWORD}" \
+            --env-var "otherUserId=${OTHER_USER_ID}"
