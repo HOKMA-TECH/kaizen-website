@@ -10,7 +10,10 @@ const inter = Inter({
   preload: false,
 })
 
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://imobkaizen.com.br').replace(/\/$/, '')
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: 'Kaizen Soluções Imobiliárias | Imóveis em Campo Grande - RJ',
     template: '%s | Kaizen Soluções Imobiliárias',
@@ -29,10 +32,13 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: 'Kaizen Soluções Imobiliárias' }],
   creator: 'Kaizen Soluções Imobiliárias',
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://www.kaizenimoveis.com.br',
+    url: SITE_URL,
     siteName: 'Kaizen Soluções Imobiliárias',
     title: 'Kaizen Soluções Imobiliárias | Imóveis em Campo Grande - RJ',
     description:
@@ -61,6 +67,9 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
   },
 }
 

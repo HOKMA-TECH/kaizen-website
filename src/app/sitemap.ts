@@ -1,6 +1,6 @@
 import { MetadataRoute } from 'next'
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.kaizenimoveis.com.br'
+const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://imobkaizen.com.br').replace(/\/$/, '')
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

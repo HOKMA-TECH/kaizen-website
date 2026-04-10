@@ -5,4 +5,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /login
 
-Sitemap: https://www.kaizenimoveis.com.br/sitemap.xml
+Sitemap: https://imobkaizen.com.br/sitemap.xml
