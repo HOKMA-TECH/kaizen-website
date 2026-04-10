@@ -56,13 +56,16 @@ export async function generateMetadata({ searchParams }: { searchParams?: { prev
   const includeDraft = await canPreview(searchParams)
   const seo = await getCmsPageSeoWithFallback('contato', {
     includeDraft,
-    fallbackTitle: 'Contato | Kaizen Soluções Imobiliárias',
-    fallbackDescription: 'Fale com a Kaizen Soluções Imobiliárias.',
+    fallbackTitle: 'Contato Kaizen | Imobiliaria em Campo Grande RJ',
+    fallbackDescription: 'Entre em contato com a Kaizen Solucoes Imobiliarias por telefone, WhatsApp ou formulario e receba atendimento rapido em Campo Grande RJ.',
   })
 
   return {
     title: seo.title,
     description: seo.description,
+    alternates: {
+      canonical: '/contato',
+    },
     openGraph: {
       title: seo.title,
       description: seo.description,

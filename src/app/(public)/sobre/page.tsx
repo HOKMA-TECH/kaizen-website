@@ -66,13 +66,16 @@ export async function generateMetadata({ searchParams }: { searchParams?: { prev
   const includeDraft = await canPreview(searchParams)
   const seo = await getCmsPageSeoWithFallback('sobre', {
     includeDraft,
-    fallbackTitle: 'Sobre | Kaizen Soluções Imobiliárias',
-    fallbackDescription: 'Conheça a história da Kaizen Soluções Imobiliárias.',
+    fallbackTitle: 'Sobre a Kaizen | Imobiliaria em Campo Grande RJ',
+    fallbackDescription: 'Conheca a historia da Kaizen Solucoes Imobiliarias, equipe com CRECI e atendimento especializado em Campo Grande e regiao do Rio de Janeiro.',
   })
 
   return {
     title: seo.title,
     description: seo.description,
+    alternates: {
+      canonical: '/sobre',
+    },
     openGraph: {
       title: seo.title,
       description: seo.description,
