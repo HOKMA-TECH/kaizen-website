@@ -25,12 +25,12 @@ export async function middleware(req: NextRequest) {
   )
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
   // Protect /admin routes
   if (req.nextUrl.pathname.startsWith('/admin')) {
-    if (!session) {
+    if (!user) {
       const loginUrl = new URL('/login', req.url)
       loginUrl.searchParams.set('redirectTo', req.nextUrl.pathname)
       return NextResponse.redirect(loginUrl)
@@ -38,8 +38,10 @@ export async function middleware(req: NextRequest) {
   }
 
   // Redirect authenticated users away from /login
-  if (req.nextUrl.pathname === '/login' && session) {
-    return NextResponse.redirect(new URL('/admin', req.url))
+  if (req.nextUrl.pathname === '/login' && user) {
+    const redirectTo = req.nextUrl.searchParams.get('redirectTo')
+    const destination = redirectTo?.startsWith('/admin') ? redirectTo : '/admin'
+    return NextResponse.redirect(new URL(destination, req.url))
   }
 
   return res

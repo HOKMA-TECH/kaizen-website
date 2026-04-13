@@ -56,9 +56,15 @@ export default function LoginPage() {
       const redirectTo = searchParams.get('redirectTo')
       const destination = redirectTo?.startsWith('/admin') ? redirectTo : '/admin'
 
+      for (let attempt = 0; attempt < 8; attempt += 1) {
+        const { data } = await supabase.auth.getSession()
+        if (data.session) break
+        await new Promise((resolve) => setTimeout(resolve, 150))
+      }
+
       router.replace(destination)
       router.refresh()
-      window.location.assign(destination)
+      window.location.href = destination
     } catch {
       toast({
         title: 'Erro',
