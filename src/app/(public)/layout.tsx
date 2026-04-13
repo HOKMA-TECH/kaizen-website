@@ -10,8 +10,26 @@ const fallbackLinks = [
   { href: '/', label: 'Início' },
   { href: '/sobre', label: 'Sobre Nós' },
   { href: '/imoveis', label: 'Imóveis' },
+  { href: '/blog', label: 'Blog' },
   { href: '/contato', label: 'Contato' },
 ]
+
+type NavLink = { href: string; label: string }
+
+function ensureFixedBlogLink(links: NavLink[]) {
+  const normalizeHref = (href: string) => href.replace(/\/$/, '') || '/'
+  const hasBlog = links.some((link) => normalizeHref(link.href) === '/blog')
+  if (hasBlog) return links
+
+  const blogLink = { href: '/blog', label: 'Blog' }
+  const contatoIndex = links.findIndex((link) => normalizeHref(link.href) === '/contato')
+
+  if (contatoIndex === -1) {
+    return [...links, blogLink]
+  }
+
+  return [...links.slice(0, contatoIndex), blogLink, ...links.slice(contatoIndex)]
+}
 
 const getCachedNavLinks = unstable_cache(
   async () => {
@@ -32,10 +50,12 @@ const getCachedNavLinks = unstable_cache(
       .order('order', { ascending: true })
 
     if (data && data.length > 0) {
-      return data.map((t: { label: string; href: string }) => ({ href: t.href, label: t.label }))
+      return ensureFixedBlogLink(
+        data.map((t: { label: string; href: string }) => ({ href: t.href, label: t.label }))
+      )
     }
 
-    return fallbackLinks
+    return ensureFixedBlogLink(fallbackLinks)
   },
   ['public-nav-links'],
   { revalidate: 300 }
