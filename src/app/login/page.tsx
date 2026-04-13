@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -14,14 +14,11 @@ import createClient from '@/lib/supabase/client'
 
 export default function LoginPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { toast } = useToast()
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [form, setForm] = useState({ email: '', password: '' })
-
-  useEffect(() => {
-    router.prefetch('/admin')
-  }, [router])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value })
@@ -56,7 +53,12 @@ export default function LoginPage() {
         description: 'Bem-vindo de volta.',
       })
 
-      router.replace('/admin')
+      const redirectTo = searchParams.get('redirectTo')
+      const destination = redirectTo?.startsWith('/admin') ? redirectTo : '/admin'
+
+      router.replace(destination)
+      router.refresh()
+      window.location.assign(destination)
     } catch {
       toast({
         title: 'Erro',

@@ -83,6 +83,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       const supabase = createClient()
       const { data } = await supabase.auth.getUser()
       const user = data.user
+
+      if (!user) {
+        router.replace('/login')
+        router.refresh()
+        window.location.assign('/login')
+        return
+      }
+
       const metadata = (user?.user_metadata ?? {}) as Record<string, unknown>
       const displayName =
         (typeof metadata.username === 'string' && metadata.username.trim().length > 0 && metadata.username) ||
@@ -95,7 +103,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
 
     loadUser()
-  }, [])
+  }, [router])
 
   const handleLogout = async () => {
     if (isLoggingOut) return
