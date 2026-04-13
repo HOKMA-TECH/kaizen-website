@@ -67,7 +67,7 @@ export default function Navbar({ navLinks = defaultLinks }: NavbarProps) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A2A66] h-20">
       <div className="container mx-auto px-4 max-w-7xl h-full">
-        <div className="flex items-center justify-between h-full">
+        <div className="relative flex items-center justify-between h-full">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="rounded-md overflow-hidden">
@@ -91,7 +91,7 @@ export default function Navbar({ navLinks = defaultLinks }: NavbarProps) {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
