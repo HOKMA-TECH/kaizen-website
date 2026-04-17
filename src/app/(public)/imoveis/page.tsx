@@ -98,7 +98,7 @@ export default function ImoveisPage() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 max-w-7xl py-10">
+      <div className="container mx-auto px-4 max-w-7xl pt-10 pb-6">
         <div className="mb-8">
           <PropertyFilter onFilter={setFilters} />
         </div>
@@ -157,16 +157,6 @@ export default function ImoveisPage() {
           </div>
         )}
 
-        <section className="mt-14 rounded-2xl border border-gray-200 bg-white p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-[#0A2A66] mb-3">Busca inteligente de imoveis no Rio de Janeiro</h2>
-          <p className="text-gray-600 leading-relaxed">
-            Nossa equipe atende Campo Grande e outras regioes da cidade com suporte completo em visita,
-            documentacao e negociacao. Se quiser atendimento personalizado, acesse a pagina de{' '}
-            <Link href="/contato" className="text-[#1E4ED8] hover:underline">contato</Link>{' '}
-            ou conheca melhor nossa trajetoria em{' '}
-            <Link href="/sobre" className="text-[#1E4ED8] hover:underline">sobre</Link>.
-          </p>
-        </section>
       </div>
     </div>
   )
