@@ -22,6 +22,8 @@ interface PropertyForm {
   featured: boolean; active: boolean; features: string
 }
 
+const MAX_IMAGE_SIZE_BYTES = 100 * 1024 * 1024
+
 export default function EditarImovelPage() {
   const router = useRouter()
   const params = useParams()
@@ -127,6 +129,15 @@ export default function EditarImovelPage() {
           toast({
             title: 'Formato não suportado',
             description: `Use JPG, PNG ou WEBP. Arquivo: ${img.file.name}`,
+            variant: 'destructive',
+          })
+          return
+        }
+
+        if (img.file.size > MAX_IMAGE_SIZE_BYTES) {
+          toast({
+            title: 'Arquivo acima do limite',
+            description: `A imagem ${img.file.name} excede 100MB.`,
             variant: 'destructive',
           })
           return
