@@ -37,8 +37,16 @@ const cinematicEase: [number, number, number, number] = [0.22, 1, 0.36, 1]
 export default function Navbar({ navLinks = defaultLinks }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [isRouteTransitioning, setIsRouteTransitioning] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   const startRouteTransition = (href: string) => {
     router.prefetch(href)
@@ -65,7 +73,14 @@ export default function Navbar({ navLinks = defaultLinks }: NavbarProps) {
   }, [pathname, isRouteTransitioning])
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0A2A66] h-20">
+    <nav
+      className={cn(
+        'fixed top-0 left-0 right-0 z-50 h-20 transition-all duration-300',
+        scrolled
+          ? 'bg-[#0A2A66] shadow-lg shadow-[#0A2A66]/20'
+          : 'bg-[#0A2A66]/70 backdrop-blur-md'
+      )}
+    >
       <div className="container mx-auto px-4 max-w-7xl h-full">
         <div className="relative flex items-center justify-between h-full">
           {/* Logo */}
