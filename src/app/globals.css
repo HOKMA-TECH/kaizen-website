@@ -130,6 +130,13 @@ body {
     background-clip: text;
     color: transparent;
   }
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 /* Respeita usuários que pedem menos movimento */
