@@ -96,9 +96,10 @@ export default async function ContatoPage({ searchParams }: { searchParams?: { p
 
   return (
     <div className="pt-20 min-h-screen bg-gray-50 flex flex-col animate-fade-in">
-      <div style={{ order: sectionOrderMap.hero }} className="bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8] py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <span className="text-blue-200 text-sm font-medium uppercase tracking-widest mb-3 block">{content['contact_hero_badge'] || 'Fale conosco'}</span>
+      <div style={{ order: sectionOrderMap.hero }} className="relative bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <span className="text-[#3B82F6] text-sm font-semibold uppercase tracking-widest mb-3 block">{content['contact_hero_badge'] || 'Fale conosco'}</span>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">{content['contact_hero_title'] || 'Contato'}</h1>
           <p className="text-blue-100 text-lg">{content['contact_hero_subtitle'] || 'Nossa equipe está pronta para atendê-lo'}</p>
         </div>

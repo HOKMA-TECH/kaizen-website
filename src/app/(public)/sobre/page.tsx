@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Award, Users, Target, TrendingUp, CheckCircle, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import Mascot from '@/components/brand/Mascot'
 import createServerClient from '@/lib/supabase/server'
 import { getCmsPageSeoWithFallback, getLegacyContentBlocksByPages, getSectionsByPageSlug } from '@/lib/cms/server'
 import { mapSectionsToLegacyContent } from '@/lib/cms/section-mapper'
@@ -104,14 +105,15 @@ export default async function SobrePage({ searchParams }: { searchParams?: { pre
 
   return (
     <div className="pt-20 flex flex-col animate-fade-in">
-      <section style={{ order: sectionOrderMap.hero }} className="bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8] py-20 text-white relative overflow-hidden">
+      <section style={{ order: sectionOrderMap.hero }} className="bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan py-24 text-white relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 right-10 w-64 h-64 bg-white rounded-full blur-3xl" />
           <div className="absolute bottom-10 left-10 w-48 h-48 bg-white rounded-full blur-3xl" />
         </div>
         <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <div className="max-w-2xl">
-            <span className="text-blue-200 text-sm font-medium uppercase tracking-widest mb-4 block">{c('about_hero_badge', 'Quem somos')}</span>
+            <span className="text-[#3B82F6] text-sm font-semibold uppercase tracking-widest mb-4 block">{c('about_hero_badge', 'Quem somos')}</span>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">{c('about_hero_title', 'Sobre a Kaizen Soluções Imobiliárias')}</h1>
             <p className="text-blue-100 text-lg leading-relaxed">{c('about_hero_subtitle', 'Mais de uma década de experiência transformando a vida de famílias através do mercado imobiliário em Campo Grande e toda região do Rio de Janeiro.')}</p>
           </div>
@@ -160,7 +162,8 @@ export default async function SobrePage({ searchParams }: { searchParams?: { pre
 
       <section style={{ order: sectionOrderMap.values }} className="py-20 bg-gray-50">
         <div className="container mx-auto px-4 max-w-7xl">
-          <div className="text-center mb-14">
+          <div className="flex flex-col items-center text-center mb-14">
+            <Mascot size={130} className="mb-4" />
             <span className="text-[#1E4ED8] text-sm font-semibold uppercase tracking-widest mb-3 block">{c('about_values_badge', 'Nosso Propósito')}</span>
             <h2 className="text-3xl md:text-4xl font-bold text-[#0A2A66] mb-4">{c('about_values_title', 'Missão, Visão e Valores')}</h2>
           </div>
@@ -173,8 +176,8 @@ export default async function SobrePage({ searchParams }: { searchParams?: { pre
             ].map((item, index) => {
               const Icon = valueIcons[index]
               return (
-                <div key={item.titleKey} className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center">
-                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5"><Icon className="h-8 w-8 text-[#1E4ED8]" /></div>
+                <div key={item.titleKey} className="group bg-white rounded-2xl p-8 shadow-sm border border-gray-100 text-center transition-all duration-300 hover:shadow-card-hover hover:-translate-y-1.5">
+                  <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300"><Icon className="h-8 w-8 text-[#1E4ED8]" /></div>
                   <h3 className="text-xl font-bold text-[#0A2A66] mb-3">{c(item.titleKey, item.defaultTitle)}</h3>
                   <p className="text-gray-600 leading-relaxed">{c(item.descKey, item.defaultDesc)}</p>
                 </div>
@@ -219,8 +222,9 @@ export default async function SobrePage({ searchParams }: { searchParams?: { pre
         </div>
       </section>
 
-      <section style={{ order: sectionOrderMap.cta }} className="py-16 bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8]">
-        <div className="container mx-auto px-4 max-w-7xl text-center">
+      <section style={{ order: sectionOrderMap.cta }} className="py-20 bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="container mx-auto px-4 max-w-7xl text-center relative z-10">
           <h2 className="text-3xl font-bold text-white mb-4">{c('about_cta_title', 'Pronto para encontrar seu imóvel?')}</h2>
           <p className="text-blue-100 mb-8">{c('about_cta_subtitle', 'Nossa equipe está à disposição para ajudá-lo')}</p>
           <Link href="/contato"><Button size="lg" variant="white" className="group">{c('about_cta_btn', 'Entrar em Contato')}<ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" /></Button></Link>
