@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import PropertyCard from '@/components/properties/PropertyCard'
+import SectionHeading from '@/components/ui/section-heading'
+import { Reveal, RevealItem } from '@/components/motion/Reveal'
 import type { Property } from '@/types'
 import createClient from '@/lib/supabase/client'
 
@@ -41,33 +43,38 @@ export default function FeaturedProperties({ content = {} }: FeaturedPropertiesP
   if (!loading && properties.length === 0) return null
 
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-12 animate-fade-in">
-          <span className="text-[#1E4ED8] text-sm font-semibold uppercase tracking-widest mb-3 block">{label}</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0A2A66] mb-4">{title}</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">{subtitle}</p>
-        </div>
+        <Reveal>
+          <SectionHeading label={label} title={title} subtitle={subtitle} />
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {loading && [1, 2, 3].map((item) => (
-            <div key={item} className="h-[430px] rounded-2xl bg-white border border-gray-100 animate-pulse" />
-          ))}
-          {!loading && properties.map((property) => (
-            <div key={property.id} className="animate-fade-in">
-              <PropertyCard property={property} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item) => (
+              <div key={item} className="relative h-[430px] rounded-2xl bg-white border border-gray-100 overflow-hidden">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-sheen" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <Reveal stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {properties.map((property) => (
+              <RevealItem key={property.id}>
+                <PropertyCard property={property} />
+              </RevealItem>
+            ))}
+          </Reveal>
+        )}
 
-        <div className="text-center mt-12 animate-fade-in">
+        <Reveal className="text-center mt-12">
           <Link href="/imoveis">
-            <Button size="lg" className="group">
+            <Button size="lg" className="group active:scale-[0.98]">
               {btnText}
               <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Button>
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   )
