@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { Heart, LayoutGrid, List, Search } from 'lucide-react'
 import PropertyCard from '@/components/properties/PropertyCard'
 import PropertyFilter from '@/components/properties/PropertyFilter'
+import Mascot from '@/components/brand/Mascot'
+import { Reveal, RevealItem } from '@/components/motion/Reveal'
 import type { Property, PropertyFilters } from '@/types'
 import createClient from '@/lib/supabase/client'
 
@@ -88,13 +90,14 @@ export default function ImoveisPage() {
         <link rel="canonical" href="https://imobkaizen.com.br/imoveis" />
       </Head>
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8] py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <div className="animate-fade-in">
-            <span className="text-blue-200 text-sm font-medium uppercase tracking-widest mb-3 block">Portfólio</span>
+      <div className="relative bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <Reveal>
+            <span className="text-[#3B82F6] text-sm font-semibold uppercase tracking-widest mb-3 block">Portfólio</span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Imóveis em Campo Grande e região</h1>
-            <p className="text-blue-100 text-lg">Encontre casas, apartamentos e opções comerciais para compra e aluguel no Rio de Janeiro.</p>
-          </div>
+            <p className="text-blue-100 text-lg max-w-2xl">Encontre casas, apartamentos e opções comerciais para compra e aluguel no Rio de Janeiro.</p>
+          </Reveal>
         </div>
       </div>
 
@@ -138,23 +141,32 @@ export default function ImoveisPage() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1,2,3].map((i) => (
-              <div key={i} className="bg-white rounded-2xl h-80 animate-pulse border border-gray-100" />
-            ))}
-          </div>
-        ) : filteredProperties.length === 0 ? (
-          <div className="text-center py-20 animate-fade-in">
-            <Search className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <h2 className="text-xl font-semibold text-gray-600 mb-2">Nenhum imóvel encontrado</h2>
-            <p className="text-gray-400">Tente ajustar os filtros para encontrar mais resultados</p>
-          </div>
-        ) : (
-          <div className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
-            {filteredProperties.map((property, index) => (
-              <div key={property.id} className="animate-fade-in" style={{ animationDelay: `${Math.min(index * 40, 200)}ms` }}>
-                <PropertyCard property={property} />
+              <div key={i} className="relative bg-white rounded-2xl h-80 overflow-hidden border border-gray-100">
+                <div className="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-sheen" />
               </div>
             ))}
           </div>
+        ) : filteredProperties.length === 0 ? (
+          <Reveal className="text-center py-16 flex flex-col items-center">
+            <Mascot size={170} className="mb-6" />
+            <h2 className="text-2xl font-bold text-[#0A2A66] mb-2">Nenhum imóvel encontrado</h2>
+            <p className="text-gray-500 mb-6 max-w-md">Tente ajustar os filtros — ou veja todo o nosso portfólio disponível.</p>
+            <button
+              onClick={() => setFilters({})}
+              className="inline-flex items-center gap-2 bg-[#0A2A66] hover:bg-[#1E4ED8] text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-colors"
+            >
+              <Search className="h-4 w-4" />
+              Ver todos os imóveis
+            </button>
+          </Reveal>
+        ) : (
+          <Reveal stagger key={viewMode + filteredProperties.length} className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+            {filteredProperties.map((property) => (
+              <RevealItem key={property.id}>
+                <PropertyCard property={property} />
+              </RevealItem>
+            ))}
+          </Reveal>
         )}
 
       </div>

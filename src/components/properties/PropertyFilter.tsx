@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -44,7 +45,7 @@ export default function PropertyFilter({ onFilter, initialFilters = {} }: Proper
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-white rounded-2xl shadow-md border border-gray-100 p-6"
+      className="bg-white/95 rounded-2xl shadow-card-hover border border-gray-100 p-6 -mt-16 relative z-20"
     >
       {/* Main Search Row */}
       <div className="flex gap-3 flex-col sm:flex-row">
@@ -116,8 +117,16 @@ export default function PropertyFilter({ onFilter, initialFilters = {} }: Proper
       </div>
 
       {/* Advanced Filters */}
-      {showAdvanced && (
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-100">
+      <AnimatePresence initial={false}>
+        {showAdvanced && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4 pt-4 border-t border-gray-100">
           <div className="space-y-1.5">
             <Label htmlFor="minPrice" className="text-gray-600 text-xs">Preço mínimo</Label>
             <Input
@@ -166,8 +175,10 @@ export default function PropertyFilter({ onFilter, initialFilters = {} }: Proper
               onChange={(e) => handleChange('minArea', Number(e.target.value))}
             />
           </div>
-        </div>
-      )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </form>
   )
 }
