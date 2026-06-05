@@ -70,7 +70,7 @@ export default async function PostPage({ params }: Props) {
 
       <article className="container mx-auto px-4 max-w-4xl py-10">
         {/* Header */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-12 mb-8">
+        <div className="bg-white rounded-3xl shadow-md border border-gray-100 p-8 md:p-12 mb-8">
           <div className="flex items-center gap-4 text-gray-400 text-sm mb-5">
             <span className="flex items-center gap-1.5"><Calendar className="h-4 w-4" />{formatDate(post.created_at)}</span>
             <span className="flex items-center gap-1.5"><Clock className="h-4 w-4" />{readingTime(post.content)} min de leitura</span>
@@ -104,7 +104,7 @@ export default async function PostPage({ params }: Props) {
         )}
 
         {/* Content */}
-        <div className="bg-white rounded-3xl shadow-sm border border-gray-100 p-8 md:p-12 mb-8">
+        <div className="bg-white rounded-3xl shadow-md border border-gray-100 p-8 md:p-12 mb-8">
           <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed whitespace-pre-line">
             {post.content}
           </div>

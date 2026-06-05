@@ -3,9 +3,10 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { ArrowLeft, Heart, Search, Trash2 } from 'lucide-react'
+import { ArrowLeft, Search, Trash2 } from 'lucide-react'
 import PropertyCard from '@/components/properties/PropertyCard'
 import { Button } from '@/components/ui/button'
+import Mascot from '@/components/brand/Mascot'
 import type { Property } from '@/types'
 
 const FAVORITES_KEY = 'favorite_properties'
@@ -77,10 +78,11 @@ export default function FavoritePropertiesPage() {
 
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8] py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
+      <div className="relative bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-            <span className="text-blue-200 text-sm font-medium uppercase tracking-widest mb-3 block">Sua lista</span>
+            <span className="text-[#3B82F6] text-sm font-semibold uppercase tracking-widest mb-3 block">Sua lista</span>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Imóveis Favoritos</h1>
             <p className="text-blue-100 text-lg">Acompanhe os imóveis que você marcou com o coração</p>
           </motion.div>
@@ -119,12 +121,12 @@ export default function FavoritePropertiesPage() {
             ))}
           </div>
         ) : properties.length === 0 ? (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
-            <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Você ainda não tem favoritos</h3>
-            <p className="text-gray-400 mb-6">Abra um imóvel e clique no coração para salvar aqui</p>
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-16 flex flex-col items-center">
+            <Mascot size={170} className="mb-6" />
+            <h3 className="text-2xl font-bold text-[#0A2A66] mb-2">Você ainda não tem favoritos</h3>
+            <p className="text-gray-500 mb-6 max-w-md">Abra um imóvel e clique no coração para salvar aqui</p>
             <Link href="/imoveis">
-              <Button>
+              <Button className="active:scale-[0.98]">
                 <Search className="h-4 w-4 mr-2" />
                 Explorar imóveis
               </Button>

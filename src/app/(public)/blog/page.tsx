@@ -50,9 +50,10 @@ export default async function BlogPage() {
   return (
     <div className="pt-20 min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-[#0A2A66] to-[#1E4ED8] py-16">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <span className="text-blue-200 text-sm font-medium uppercase tracking-widest mb-3 block">Kaizen Blog</span>
+      <div className="relative bg-gradient-deep bg-[length:200%_200%] animate-gradient-pan py-20 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial" />
+        <div className="container mx-auto px-4 max-w-7xl relative z-10">
+          <span className="text-[#3B82F6] text-sm font-semibold uppercase tracking-widest mb-3 block">Kaizen Blog</span>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">Notícias & Dicas</h1>
           <p className="text-blue-100 text-lg">Tudo sobre o mercado imobiliário da Zona Oeste</p>
         </div>
@@ -69,7 +70,7 @@ export default async function BlogPage() {
             {/* Featured post */}
             <div className="mb-12">
               <Link href={`/blog/${posts[0].slug}`} className="group block">
-                <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 md:grid md:grid-cols-2">
+                <div className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-card-hover transition-all duration-300 md:grid md:grid-cols-2 hover:-translate-y-1">
                   <div className="relative h-64 md:h-full min-h-[300px] bg-gray-100">
                     {posts[0].cover_image ? (
                       <Image
@@ -111,7 +112,7 @@ export default async function BlogPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {posts.slice(1).map((post) => (
                   <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 h-full flex flex-col">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-card-hover transition-all duration-300 h-full flex flex-col hover:-translate-y-1">
                       <div className="relative h-48 bg-gray-100">
                         {post.cover_image ? (
                           <Image
