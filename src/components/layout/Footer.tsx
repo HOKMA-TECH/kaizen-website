@@ -51,7 +51,8 @@ export default async function Footer() {
   const links = footerLinks.length > 0 ? footerLinks : fallbackQuickLinks
 
   return (
-    <footer className="bg-[#0A2A66] text-white">
+    <footer className="relative bg-gradient-deep text-white">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3B82F6]/60 to-transparent" />
       <div className="container mx-auto px-4 max-w-7xl py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div className="lg:col-span-1">
@@ -77,13 +78,13 @@ export default async function Footer() {
             </div>
             <p className="text-blue-200 text-sm leading-relaxed mb-6">{description}</p>
             <div className="flex gap-3">
-              <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors" aria-label="Instagram">
+              <a href={instagram} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-[#1E4ED8] p-2 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:scale-110" aria-label="Instagram">
                 <Instagram className="h-4 w-4" />
               </a>
-              <a href={facebook} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors" aria-label="Facebook">
+              <a href={facebook} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-[#1E4ED8] p-2 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:scale-110" aria-label="Facebook">
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href={linkedin} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-white/20 p-2 rounded-lg transition-colors" aria-label="LinkedIn">
+              <a href={linkedin} target="_blank" rel="noopener noreferrer" className="bg-white/10 hover:bg-[#1E4ED8] p-2 rounded-lg transition-all duration-200 hover:-translate-y-0.5 hover:scale-110" aria-label="LinkedIn">
                 <Linkedin className="h-4 w-4" />
               </a>
             </div>
