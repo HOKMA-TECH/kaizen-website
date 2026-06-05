@@ -22,7 +22,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
           src={imageUrl}
           alt={property.title}
           fill
-          className="object-cover group-hover:scale-105 transition-transform duration-[600ms] ease-out"
+          className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         {/* Gradiente para legibilidade dos badges */}
