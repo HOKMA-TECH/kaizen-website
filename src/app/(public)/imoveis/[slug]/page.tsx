@@ -200,11 +200,12 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
                 className="object-cover"
                 priority
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
               <div className="absolute top-4 left-4 flex gap-2">
-                <span className="bg-[#0A2A66] text-white text-xs font-medium px-3 py-1 rounded-full">
+                <span className="bg-[#0A2A66]/90 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full">
                   {getPropertyTypeLabel(property.type)}
                 </span>
-                <span className="bg-green-600 text-white text-xs font-medium px-3 py-1 rounded-full">
+                <span className="bg-green-600/90 backdrop-blur-sm text-white text-xs font-medium px-3 py-1 rounded-full">
                   {getPropertyStatusLabel(property.status)}
                 </span>
               </div>
@@ -281,7 +282,7 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
                 <MapPin className="h-4 w-4 text-[#3B82F6]" />
                 <span>{property.address} — {property.neighborhood}, {property.city} - {property.state}</span>
               </div>
-              <p className="text-3xl font-bold text-[#1E4ED8] mb-6">
+              <p className="text-3xl font-bold text-gradient-blue mb-6">
                 {formatCurrency(property.price)}
                 {property.status === 'aluguel' && (
                   <span className="text-base font-normal text-gray-500 ml-1">/mês</span>
@@ -345,7 +346,7 @@ export default function PropertyDetailPage({ params }: { params: { slug: string 
 
           {/* Right: Contact Card */}
           <div className="space-y-4">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 sticky top-24">
+            <div className="bg-white rounded-2xl p-6 shadow-card-hover border border-gray-100 sticky top-24">
               <h2 className="text-lg font-bold text-[#0A2A66] mb-2">Interessado?</h2>
               <p className="text-gray-500 text-sm mb-5">
                 Entre em contato com nossos corretores e agende uma visita
