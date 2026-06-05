@@ -9,19 +9,19 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'bg-[#0A2A66] text-white hover:bg-[#1E4ED8] shadow-md transition-all duration-200',
+          'bg-[#0A2A66] text-white hover:bg-[#1E4ED8] shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]',
         destructive:
-          'bg-destructive text-destructive-foreground hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90 active:scale-[0.98]',
         outline:
-          'border-2 border-[#0A2A66] text-[#0A2A66] bg-transparent hover:bg-[#0A2A66] hover:text-white transition-all duration-200',
+          'border-2 border-[#0A2A66] text-[#0A2A66] bg-transparent hover:bg-[#0A2A66] hover:text-white transition-all duration-200 active:scale-[0.98]',
         secondary:
-          'bg-[#1E4ED8] text-white hover:bg-[#0A2A66] transition-all duration-200',
+          'bg-[#1E4ED8] text-white hover:bg-[#0A2A66] shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-[#1E4ED8] underline-offset-4 hover:underline',
         accent:
-          'bg-[#3B82F6] text-white hover:bg-[#1E4ED8] shadow-md transition-all duration-200',
+          'bg-[#3B82F6] text-white hover:bg-[#1E4ED8] shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]',
         white:
-          'bg-white text-[#0A2A66] hover:bg-gray-100 shadow-md transition-all duration-200',
+          'bg-white text-[#0A2A66] hover:bg-gray-100 shadow-md hover:shadow-lg transition-all duration-200 active:scale-[0.98]',
       },
       size: {
         default: 'h-10 px-4 py-2',
