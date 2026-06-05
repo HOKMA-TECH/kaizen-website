@@ -1,5 +1,7 @@
 import React from 'react'
 import { Shield, Star, Clock, HeartHandshake, TrendingUp, Award } from 'lucide-react'
+import SectionHeading from '@/components/ui/section-heading'
+import { Reveal, RevealItem } from '@/components/motion/Reveal'
 
 interface DifferentialsProps {
   content?: Record<string, string>
@@ -27,7 +29,7 @@ export default function Differentials({ content = {} }: DifferentialsProps) {
   const title = content['diferenciais_title'] || 'Nossos Diferenciais'
   const subtitle = content['diferenciais_subtitle'] || 'Somos muito mais que uma imobiliária. Somos parceiros na realização do seu sonho'
 
-  const differentials = [1,2,3,4,5,6].map((n, i) => ({
+  const differentials = [1, 2, 3, 4, 5, 6].map((n, i) => ({
     icon: icons[i],
     title: content[`diferenciais_${n}_title`] || defaultTitles[i],
     description: content[`diferenciais_${n}_desc`] || defaultDescs[i],
@@ -38,27 +40,25 @@ export default function Differentials({ content = {} }: DifferentialsProps) {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4 max-w-7xl">
-        <div className="text-center mb-14 animate-fade-in">
-          <span className="text-[#1E4ED8] text-sm font-semibold uppercase tracking-widest mb-3 block">{label}</span>
-          <h2 className="text-3xl md:text-4xl font-bold text-[#0A2A66] mb-4">{title}</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">{subtitle}</p>
-        </div>
+        <Reveal>
+          <SectionHeading label={label} title={title} subtitle={subtitle} />
+        </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Reveal stagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {differentials.map((item, index) => (
-            <div
+            <RevealItem
               key={index}
-              className="group p-6 rounded-2xl border border-gray-100 hover:border-[#1E4ED8]/30 hover:shadow-lg transition-all duration-300 bg-white hover:-translate-y-1 animate-fade-in"
-              style={{ animationDelay: `${Math.min(index * 40, 200)}ms` }}
+              className="group relative p-6 rounded-2xl border border-gray-100 hover:border-[#1E4ED8]/30 hover:shadow-card-hover transition-all duration-300 bg-white hover:-translate-y-1.5 overflow-hidden"
             >
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#0A2A66] via-[#1E4ED8] to-[#3B82F6] scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
               <div className={`w-14 h-14 ${item.color} rounded-xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300`}>
                 <item.icon className={`h-7 w-7 ${item.iconColor}`} />
               </div>
               <h3 className="text-lg font-bold text-[#0A2A66] mb-2">{item.title}</h3>
               <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </Reveal>
       </div>
     </section>
   )
