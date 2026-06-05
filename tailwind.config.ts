@@ -98,6 +98,17 @@ const config: Config = {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
         },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-12px)' },
+        },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
+        },
+        'gradient-pan': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -106,6 +117,9 @@ const config: Config = {
         'slide-in-left': 'slide-in-left 0.6s ease-out',
         'slide-in-right': 'slide-in-right 0.6s ease-out',
         'pulse-slow': 'pulse-slow 2s ease-in-out infinite',
+        float: 'float 6s ease-in-out infinite',
+        shimmer: 'shimmer 2.2s infinite',
+        'gradient-pan': 'gradient-pan 12s ease infinite',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -113,10 +127,15 @@ const config: Config = {
       backgroundImage: {
         'gradient-kaizen': 'linear-gradient(135deg, #0A2A66 0%, #1E4ED8 100%)',
         'gradient-hero': 'linear-gradient(to bottom, rgba(10,42,102,0.8) 0%, rgba(10,42,102,0.4) 100%)',
+        'gradient-radial': 'radial-gradient(60% 60% at 50% 0%, rgba(59,130,246,0.25) 0%, rgba(10,42,102,0) 70%)',
+        'gradient-deep': 'linear-gradient(160deg, #061A3F 0%, #0A2A66 45%, #153AAC 100%)',
+        'gradient-sheen': 'linear-gradient(110deg, rgba(255,255,255,0) 30%, rgba(255,255,255,0.35) 50%, rgba(255,255,255,0) 70%)',
       },
       boxShadow: {
         'kaizen': '0 4px 20px rgba(10, 42, 102, 0.15)',
         'kaizen-lg': '0 8px 40px rgba(10, 42, 102, 0.2)',
+        'glow': '0 0 40px rgba(59,130,246,0.35)',
+        'card-hover': '0 20px 50px -12px rgba(10,42,102,0.35)',
       },
     },
   },
