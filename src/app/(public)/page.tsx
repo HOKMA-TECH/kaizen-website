@@ -1,20 +1,11 @@
-import HeroSection from '@/components/home/HeroSection'
-import FeaturedProperties from '@/components/home/FeaturedProperties'
-import Differentials from '@/components/home/Differentials'
-import CallToAction from '@/components/home/CallToAction'
+import CinematicHome from '@/components/cinematic/CinematicHome'
 import { mapSectionsToLegacyContent } from '@/lib/cms/section-mapper'
 import createServerClient from '@/lib/supabase/server'
 import { getCmsPageSeoWithFallback, getLegacyContentBlocksByPages, getSectionsByPageSlug, getSiteSettings } from '@/lib/cms/server'
 import type { Metadata } from 'next'
+import type { Property } from '@/types'
 
 const defaultOrder = ['hero', 'featured_properties', 'differentials', 'cta'] as const
-
-const componentBySectionType: Record<string, (content: Record<string, string>) => JSX.Element> = {
-  hero: (content) => <HeroSection content={content} />,
-  featured_properties: (content) => <FeaturedProperties content={content} />,
-  differentials: (content) => <Differentials content={content} />,
-  cta: (content) => <CallToAction content={content} />,
-}
 
 export async function generateMetadata({ searchParams }: { searchParams?: { preview?: string } }): Promise<Metadata> {
   let includeDraft = false
@@ -84,13 +75,32 @@ async function getOrderAndContent(previewMode: boolean) {
   }
 }
 
+async function getFeaturedProperties(): Promise<Property[]> {
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const supabase = createServerClient() as any
+    const { data } = await supabase
+      .from('properties')
+      .select('id, slug, title, neighborhood, city, state, type, status, price, area, bedrooms, bathrooms, parking_spaces, featured, images, created_at')
+      .eq('publication_status', 'published')
+      .eq('featured', true)
+      .order('created_at', { ascending: false })
+      .limit(5)
+    return (data ?? []) as Property[]
+  } catch {
+    return []
+  }
+}
+
 export default async function HomePage({ searchParams }: { searchParams?: { preview?: string } }) {
   const previewMode = searchParams?.preview === '1'
-  const { content, order } = await getOrderAndContent(previewMode)
+  const [{ content }, featured] = await Promise.all([
+    getOrderAndContent(previewMode),
+    getFeaturedProperties(),
+  ])
 
-  return (
-    <>
-      {order.map((sectionType) => componentBySectionType[sectionType]?.(content) ?? null)}
-    </>
-  )
+  const whatsapp =
+    content['contact_whatsapp'] || process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5521999999999'
+
+  return <CinematicHome content={content} featured={featured} whatsapp={whatsapp} />
 }
