@@ -1,16 +1,4 @@
-// Singleton compartilhado entre a árvore DOM e a árvore R3F (Canvas).
-// Atualizado pelo LenisProvider; lido pelo CameraRig dentro do useFrame.
-
-export const scrollStore = {
-  /** progresso global da página, 0..1 */
-  progress: 0,
-  /** velocidade instantânea do scroll (px/frame aprox.) */
-  velocity: 0,
-  /** o usuário pediu menos movimento? */
-  reducedMotion: false,
-  /** viewport estreita (mobile)? */
-  isMobile: false,
-}
+// Helpers de preferências do usuário, compartilhados pelos componentes V3.
 
 export function prefersReducedMotion(): boolean {
   if (typeof window === 'undefined') return false

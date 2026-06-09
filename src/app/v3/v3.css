@@ -1,22 +1,21 @@
-/* Estilos escopados da experiência V3. Tudo prefixado com .v3- ou dentro de .v3-root
-   para nunca vazar para o restante do site. */
+/* Estilos escopados da experiência V3 — premium claro, paleta Kaizen.
+   Tudo dentro de .v3-root para não vazar para o restante do site. */
 
 .v3-root {
-  --v3-bg: #06070d;
-  --v3-bg-soft: #0b0e1a;
-  --v3-fg: #eef2ff;
-  --v3-muted: rgba(238, 242, 255, 0.6);
-  --v3-cyan: #22d3ee;
-  --v3-amber: #f5b563;
-  --v3-line: rgba(255, 255, 255, 0.1);
+  --kz-dark: #0a2a66;
+  --kz-medium: #1e4ed8;
+  --kz-light: #3b82f6;
+  --kz-ink: #0b1b3a;
+  --kz-body: #4b5563;
+  --kz-surface: #f6f8fc;
 
-  background: var(--v3-bg);
-  color: var(--v3-fg);
+  background: #ffffff;
+  color: var(--kz-ink);
   font-family: var(--font-inter), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Lenis */
+/* Lenis smooth scroll */
 html.lenis,
 html.lenis body {
   height: auto;
@@ -28,62 +27,41 @@ html.lenis body {
   overflow: hidden;
 }
 
-/* Vidro */
-.v3-glass {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.08) 0%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  border: 1px solid var(--v3-line);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-}
-
-/* Texto display */
-.v3-display {
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 0.98;
-}
-
 .v3-eyebrow {
   text-transform: uppercase;
-  letter-spacing: 0.34em;
-  font-size: 0.72rem;
-  color: var(--v3-muted);
+  letter-spacing: 0.22em;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--kz-medium);
+}
+
+.v3-display {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.04;
 }
 
 .v3-gradient-text {
-  background: linear-gradient(120deg, #ffffff 0%, var(--v3-cyan) 60%, var(--v3-amber) 110%);
+  background: linear-gradient(120deg, var(--kz-dark) 0%, var(--kz-medium) 55%, var(--kz-light) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Grão de filme */
-.v3-grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 50;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+/* máscara para o reveal de linhas de texto */
+.v3-mask {
+  overflow: hidden;
+  display: block;
 }
 
-/* Reveal padrão (GSAP define o estado inicial via JS para evitar flash) */
-.v3-reveal {
-  will-change: transform, opacity;
-}
-
-/* Brilho de fundo radial */
-.v3-radial {
-  background: radial-gradient(60% 50% at 50% 30%, rgba(34, 211, 238, 0.12) 0%, transparent 70%);
+/* barra de progresso de leitura */
+.v3-progress {
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .v3-grain {
-    display: none;
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
   }
 }
