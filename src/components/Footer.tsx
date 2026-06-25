@@ -79,7 +79,12 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/55 sm:flex-row">
           <p>© {new Date().getFullYear()} {SITE.fullName}. {SITE.creci}.</p>
-          <p>Desenvolvido por Hokma Tech.</p>
+          <div className="flex items-center gap-4">
+            <p>Desenvolvido por Hokma Tech.</p>
+            <a href="/login" className="text-white/35 transition-colors hover:text-white/70">
+              Área administrativa
+            </a>
+          </div>
         </div>
       </div>
     </footer>
