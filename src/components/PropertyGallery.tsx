@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export default function PropertyGallery({ images, title }: { images: string[]; title: string }) {
   const [active, setActive] = useState(0);
@@ -16,8 +17,14 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
   return (
     <div>
       <div className="relative aspect-[4/3] overflow-hidden rounded-3xl ring-1 ring-line shadow-card">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={images[active]} alt={`${title} — foto ${active + 1}`} className="h-full w-full object-cover" />
+        <Image
+          src={images[active]}
+          alt={`${title} — foto ${active + 1}`}
+          fill
+          priority
+          sizes="(max-width: 1024px) 100vw, 55vw"
+          className="object-cover"
+        />
       </div>
 
       {images.length > 1 && (
@@ -31,8 +38,7 @@ export default function PropertyGallery({ images, title }: { images: string[]; t
               }`}
               aria-label={`Ver foto ${i + 1}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={src} alt="" className="h-full w-full object-cover" />
+              <Image src={src} alt="" fill sizes="120px" className="object-cover" />
             </button>
           ))}
         </div>

@@ -4,7 +4,7 @@ import RealPropertyCard from "@/components/RealPropertyCard";
 import { getFeaturedProperties } from "@/lib/realProperties";
 
 export default async function FeaturedProperties() {
-  const properties = await getFeaturedProperties(6);
+  const properties = await getFeaturedProperties(3);
 
   return (
     <section id="imoveis" className="relative bg-abyss px-5 py-24 sm:px-8 lg:py-32">

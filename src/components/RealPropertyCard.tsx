@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   type RealProperty,
   TYPE_LABELS,
@@ -15,12 +16,12 @@ export default function RealPropertyCard({ p }: { p: RealProperty }) {
     <Link href={`/imoveis/${p.slug}`} className="card-dark group block overflow-hidden">
       <div className="relative aspect-[4/3] overflow-hidden bg-panel">
         {cover ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
+          <Image
             src={cover}
             alt={`${p.title} — ${TYPE_LABELS[p.type]} em ${location || p.city || ""}`}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center text-faint">Sem foto</div>

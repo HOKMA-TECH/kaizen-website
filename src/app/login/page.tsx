@@ -21,7 +21,16 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) {
-      setError("E-mail ou senha inválidos.");
+      const m = (error.message || "").toLowerCase();
+      if (m.includes("not confirmed") || m.includes("confirm")) {
+        setError(
+          "Usuário ainda não confirmado. No painel do Supabase (Authentication → Users), confirme este e-mail (ou recrie marcando “Auto Confirm User”)."
+        );
+      } else if (m.includes("invalid login") || m.includes("credentials")) {
+        setError("E-mail ou senha incorretos.");
+      } else {
+        setError(error.message || "Não foi possível entrar.");
+      }
       return;
     }
     const params = new URLSearchParams(window.location.search);
