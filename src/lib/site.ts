@@ -10,7 +10,7 @@ export const SITE = {
   whatsapp: "https://wa.me/5521986574084",
   instagram: "https://www.instagram.com/kaizen.imoveis?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D",
   instagramHandle: "@kaizen.imoveis",
-  facebook: "https://facebook.com/kaizen.imoveis",
+  facebook: "https://www.facebook.com/p/Kaizen-solu%C3%A7%C3%B5es-imobili%C3%A1ria-61559219112477/",
   linkedin: "https://linkedin.com/company/kaizen-imoveis",
 } as const;
 
