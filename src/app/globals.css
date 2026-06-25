@@ -1,106 +1,319 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
-  }
+/* ============================================================
+   KAIZEN · Soluções Imobiliárias — Design System
+   Dark · preto + azul · minimalista premium · subtle motion
+   ============================================================ */
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 48%;
-  }
+@theme {
+  /* Canvas */
+  --color-night: #05080f;      /* page background */
+  --color-abyss: #030509;      /* deepest sections */
+  --color-panel: #0a111f;      /* raised surfaces */
+  --color-panel-2: #0e1729;    /* hover surfaces */
+
+  /* Brand blues (logo royal blue) */
+  --color-blue-900: #0a2a66;
+  --color-blue-700: #1049b8;
+  --color-blue-600: #1565e0;   /* primary accent */
+  --color-blue-500: #2f7bf0;
+  --color-blue-400: #5a9bf6;
+  --color-glow: #3b82f6;
+
+  /* Text on dark */
+  --color-ink: #f4f7fb;        /* headings */
+  --color-body: #b9c4d6;       /* body copy */
+  --color-muted: #8b99b0;      /* secondary */
+  --color-faint: #5c6a82;      /* captions */
+
+  --color-line: rgba(91, 130, 200, 0.16);  /* hairline borders */
+  --color-whatsapp: #25d366;
+
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --ease-soft: cubic-bezier(0.25, 1, 0.5, 1);
+
+  --shadow-card: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 0 60px -12px rgba(21, 101, 224, 0.45);
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
+:root {
+  --background: #05080f;
+  --foreground: #f4f7fb;
 }
 
-@layer utilities {
-  .line-clamp-2 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  .line-clamp-3 {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-}
-
-/* Smooth scroll */
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Lenis owns scrolling */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-html,
 body {
-  max-width: 100%;
-  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  /* clip (e não hidden): hidden criaria um scroll container e quebraria position:sticky */
+  overflow-x: clip;
 }
 
-/* Custom scrollbar */
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ---------- Typography helpers ---------- */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+.text-balance {
+  text-wrap: balance;
+}
+.tracking-luxe {
+  letter-spacing: 0.22em;
+}
+
+/* eyebrow label */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-blue-400);
+}
+.eyebrow::before {
+  content: "";
+  width: 1.9rem;
+  height: 1px;
+  background: var(--color-blue-600);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border-radius: 999px;
+  padding: 0.9rem 1.6rem;
+  min-height: 44px;
+  transition: transform 0.45s var(--ease-soft), box-shadow 0.45s var(--ease-soft),
+    background 0.3s var(--ease-soft), color 0.3s var(--ease-soft),
+    border-color 0.3s var(--ease-soft);
+  will-change: transform;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  color: #fff;
+  background: linear-gradient(135deg, var(--color-blue-600), var(--color-blue-700));
+  box-shadow: 0 14px 38px -14px rgba(21, 101, 224, 0.75);
+}
+.btn-primary:hover {
+  box-shadow: 0 20px 50px -14px rgba(47, 123, 240, 0.85);
+}
+.btn-outline {
+  color: var(--color-ink);
+  background: rgba(10, 17, 31, 0.4);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(8px);
+}
+.btn-outline:hover {
+  border-color: var(--color-blue-500);
+  background: rgba(21, 101, 224, 0.12);
+}
+.btn-whatsapp {
+  color: #04150b;
+  background: var(--color-whatsapp);
+  box-shadow: 0 14px 38px -14px rgba(37, 211, 102, 0.6);
+}
+
+/* ---------- Surfaces ---------- */
+.card-dark {
+  background: linear-gradient(180deg, rgba(14, 23, 41, 0.85), rgba(10, 17, 31, 0.95));
+  border: 1px solid var(--color-line);
+  border-radius: 1.25rem;
+  transition: transform 0.5s var(--ease-soft), border-color 0.4s var(--ease-soft),
+    box-shadow 0.5s var(--ease-soft);
+}
+.card-dark:hover {
+  border-color: rgba(47, 123, 240, 0.45);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-4px);
+}
+
+/* blue radial accents for dark sections */
+.bg-mesh-dark {
+  background-image:
+    radial-gradient(900px 480px at 80% -10%, rgba(21, 101, 224, 0.12), transparent 60%),
+    radial-gradient(700px 480px at -10% 110%, rgba(16, 73, 184, 0.1), transparent 55%);
+}
+
+/* hero CSS fallback (always behind canvas) */
+.bg-hero-gradient {
+  background:
+    radial-gradient(1200px 700px at 50% 115%, rgba(21, 101, 224, 0.28), transparent 65%),
+    radial-gradient(800px 480px at 85% -5%, rgba(16, 73, 184, 0.18), transparent 60%),
+    var(--color-night);
+}
+
+/* thin glowing divider */
+.divider-glow {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(47, 123, 240, 0.5), transparent);
+}
+
+/* ---------- Reveal init state (JS adds motion) ---------- */
+[data-reveal] {
+  opacity: 0;
+}
+
+/* ---------- Storytelling ---------- */
+
+/* palavra de marca gigante usada como pano de fundo do hero
+   — preenchida com gradiente sutil e esmaecida nas bordas (sem corte duro) */
+.brand-word {
+  background: linear-gradient(
+    180deg,
+    rgba(90, 155, 246, 0.16),
+    rgba(59, 130, 246, 0.04) 55%,
+    rgba(59, 130, 246, 0) 92%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 14%,
+    #000 86%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 14%,
+    #000 86%,
+    transparent
+  );
+}
+
+/* rótulo de capítulo */
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-blue-400);
+}
+.chapter-tag::before {
+  content: "";
+  width: 2.4rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-blue-600), transparent);
+}
+
+/* marquee infinito */
+@keyframes marquee-x {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-x 28s linear infinite;
+}
+
+/* orbes de luz em parallax */
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* grain sutil por cima das seções de história */
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+}
+
+/* cursor de brilho azul (desktop) */
+.cursor-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 70;
+  width: 520px;
+  height: 520px;
+  margin-left: -260px;
+  margin-top: -260px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(21, 101, 224, 0.12), transparent 60%);
+  mix-blend-mode: screen;
+}
+@media (pointer: coarse) {
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* linha da jornada */
+.journey-line {
+  transform-origin: top;
+  background: linear-gradient(180deg, var(--color-blue-500), rgba(21, 101, 224, 0.1));
+}
+
+/* ---------- Scrollbar ---------- */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #070b14;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: #1E4ED8;
-  border-radius: 3px;
+  background: #1a2742;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1565e0;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #0A2A66;
+::selection {
+  background: rgba(47, 123, 240, 0.35);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
 }

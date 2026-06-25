@@ -1,89 +1,71 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import { Toaster } from '@/components/ui/toaster'
+import type { Metadata, Viewport } from "next";
+import { Inter, Sora } from "next/font/google";
+import "./globals.css";
+import SmoothScroll from "@/components/SmoothScroll";
+import ScrollProgress from "@/components/ScrollProgress";
+import Navbar from "@/components/Navbar";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import Cursor from "@/components/Cursor";
 
 const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
-  preload: false,
-})
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: "swap",
+});
 
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://imobkaizen.com.br').replace(/\/$/, '')
+const sora = Sora({
+  variable: "--font-sora",
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL("https://www.imobkaizen.com.br"),
   title: {
-    default: 'Kaizen Soluções Imobiliárias | Imóveis em Campo Grande - RJ',
-    template: '%s | Kaizen Soluções Imobiliárias',
+    default:
+      "Kaizen Soluções Imobiliárias | A melhor imobiliária de Campo Grande - RJ",
+    template: "%s · Kaizen Imóveis",
   },
   description:
-    'Encontre o imóvel ideal em Campo Grande e toda região do Rio de Janeiro. Casas, apartamentos, coberturas e terrenos à venda e para alugar. Kaizen Soluções Imobiliárias.',
+    "A melhor imobiliária de Campo Grande, Zona Oeste do Rio de Janeiro. Compra, venda e avaliação de imóveis com corretores especializados (CRECI), visitas presenciais e virtuais.",
   keywords: [
-    'imóveis Campo Grande RJ',
-    'apartamentos Rio de Janeiro',
-    'casas à venda',
-    'imobiliária Campo Grande',
-    'Kaizen imóveis',
-    'imóveis Rio de Janeiro',
-    'comprar imóvel RJ',
-    'alugar imóvel Campo Grande',
+    "imobiliária Campo Grande RJ",
+    "imóveis Zona Oeste",
+    "comprar casa Campo Grande",
+    "apartamento Campo Grande RJ",
+    "Kaizen Imóveis",
+    "imobiliária Rio de Janeiro",
   ],
-  authors: [{ name: 'Kaizen Soluções Imobiliárias' }],
-  creator: 'Kaizen Soluções Imobiliárias',
-  alternates: {
-    canonical: '/',
-  },
   openGraph: {
-    type: 'website',
-    locale: 'pt_BR',
-    url: SITE_URL,
-    siteName: 'Kaizen Soluções Imobiliárias',
-    title: 'Kaizen Soluções Imobiliárias | Imóveis em Campo Grande - RJ',
+    title: "Kaizen Soluções Imobiliárias",
     description:
-      'Realizando sonhos através do imóvel ideal. Imóveis à venda e para alugar em Campo Grande e toda região do Rio de Janeiro.',
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80',
-        width: 1200,
-        height: 630,
-        alt: 'Kaizen Soluções Imobiliárias',
-      },
-    ],
+      "A melhor imobiliária de Campo Grande, Zona Oeste - RJ. Realizando sonhos através do imóvel ideal.",
+    locale: "pt_BR",
+    type: "website",
   },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Kaizen Soluções Imobiliárias',
-    description: 'Realizando sonhos através do imóvel ideal.',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: process.env.GOOGLE_SITE_VERIFICATION,
-  },
-}
+};
 
-export default async function RootLayout({
+export const viewport: Viewport = {
+  themeColor: "#05080f",
+  width: "device-width",
+  initialScale: 1,
+};
+
+export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
-      <body className={`${inter.className} antialiased`}>
-        {children}
-        <Toaster />
+    <html lang="pt-BR" className={`${inter.variable} ${sora.variable}`}>
+      <body className="bg-night text-ink antialiased">
+        <ScrollProgress />
+        <Cursor />
+        <Navbar />
+        <SmoothScroll>{children}</SmoothScroll>
+        <WhatsAppButton />
       </body>
     </html>
-  )
+  );
 }
