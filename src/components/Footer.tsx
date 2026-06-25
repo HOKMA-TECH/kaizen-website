@@ -79,7 +79,7 @@ export default function Footer() {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/55 sm:flex-row">
           <p>© {new Date().getFullYear()} {SITE.fullName}. {SITE.creci}.</p>
-          <p>Realizando sonhos através do imóvel ideal.</p>
+          <p>Desenvolvido por Hokma Tech.</p>
         </div>
       </div>
     </footer>
