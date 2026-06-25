@@ -17,7 +17,7 @@ export const SITE = {
 export const STATS = [
   { value: 3, suffix: " anos", label: "Realizando sonhos" },
   { value: 100, suffix: "+", label: "Corretores e parceiros" },
-  { value: 1500, suffix: "+", label: "Famílias atendidas" },
+  { value: 1000, suffix: "+", label: "Famílias atendidas" },
   { value: 100, suffix: "%", label: "Dedicação em cada etapa" },
 ] as const;
 

@@ -81,7 +81,7 @@ export default function ChapterStory() {
                 fosse o próprio.
               </p>
               <p>
-                É assim que já ajudamos mais de <span className="text-ink">1.500 famílias</span>{" "}
+                É assim que já ajudamos mais de <span className="text-ink">1.000 famílias</span>{" "}
                 a conquistarem as chaves do próprio lar: com profissionalismo, dedicação,
                 rapidez e, acima de tudo, <span className="text-blue-400">honestidade</span>.
               </p>
