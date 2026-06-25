@@ -58,7 +58,7 @@ export default function FinalCTA() {
       <div className="relative z-10 mx-auto max-w-4xl">
         <p className="chapter-tag justify-center">Capítulo final — o seu</p>
         <h2 className="final-title font-display mt-8 text-balance text-5xl font-bold leading-[1.05] text-ink sm:text-7xl">
-          Mais de 1.500 histórias já têm endereço.{" "}
+          Mais de 1.000 histórias já têm endereço.{" "}
           <span className="bg-gradient-to-r from-blue-500 via-glow to-blue-400 bg-clip-text text-transparent">
             A sua começa hoje.
           </span>
