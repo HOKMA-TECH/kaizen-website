@@ -8,7 +8,7 @@ export const SITE = {
   email: "contato@kaizenimoveis.com.br",
   address: "Rua Engenheiro Trindade, 99, 9º andar — Campo Grande, Rio de Janeiro - RJ",
   whatsapp: "https://wa.me/5521986574084",
-  instagram: "https://instagram.com/kaizen.imoveis",
+  instagram: "https://www.instagram.com/kaizen.imoveis?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw%3D%3D",
   instagramHandle: "@kaizen.imoveis",
   facebook: "https://facebook.com/kaizen.imoveis",
   linkedin: "https://linkedin.com/company/kaizen-imoveis",
