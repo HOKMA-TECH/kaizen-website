@@ -94,7 +94,7 @@ export default function ChapterStory() {
           <div className="divider-glow" />
           <div className="mt-10 grid grid-cols-2 gap-x-8 gap-y-10 lg:grid-cols-4">
             {STATS.map((s) => (
-              <div key={s.label}>
+              <div key={s.label} className="text-center">
                 <div className="font-display text-4xl font-bold text-ink sm:text-5xl">
                   <span data-count={s.value}>0</span>
                   <span className="text-blue-500">{s.suffix}</span>
