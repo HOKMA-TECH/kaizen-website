@@ -153,7 +153,7 @@ export default function Hero() {
           <span className="relative flex h-9 w-5 items-start justify-center rounded-full border border-line p-1.5">
             <span className="h-1.5 w-1 animate-bounce rounded-full bg-blue-500" />
           </span>
-          Role e conheça a nossa
+          Role e conheça nossa história
         </div>
       </div>
     </section>
