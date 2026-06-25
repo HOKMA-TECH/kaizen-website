@@ -43,7 +43,7 @@ export default function PropertiesBrowser({ properties }: { properties: RealProp
   return (
     <div>
       {/* barra de busca + filtros */}
-      <div className="sticky top-[72px] z-30 -mx-5 mb-10 border-y border-line bg-night/85 px-5 py-4 backdrop-blur-md sm:top-[80px] sm:mx-0 sm:rounded-2xl sm:border sm:px-5">
+      <div className="sticky top-0 z-40 -mx-5 mb-10 border-b border-line bg-night/95 px-5 py-4 backdrop-blur-md sm:-mx-8 sm:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <div className="relative flex-1">
             <svg
