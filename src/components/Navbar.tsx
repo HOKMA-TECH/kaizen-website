@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 import { NAV_LINKS, SITE } from "@/lib/site";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -25,7 +28,17 @@ export default function Navbar() {
 
   const go = (href: string) => {
     setOpen(false);
-    document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // rota (ex.: /imoveis): navega
+    if (href.startsWith("/")) {
+      router.push(href);
+      return;
+    }
+    // âncora (ex.: #historia): rola na home; fora dela, volta para a home + âncora
+    if (pathname === "/") {
+      document.querySelector(href)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    } else {
+      router.push(`/${href}`);
+    }
   };
 
   const solid = scrolled || open;

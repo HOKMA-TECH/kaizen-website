@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -136,14 +137,9 @@ export default function Hero() {
               <path d="M11.3 3.3a1 1 0 0 1 1.4 0l6 6a1 1 0 0 1 0 1.4l-6 6a1 1 0 1 1-1.4-1.4l4.29-4.3H2a1 1 0 1 1 0-2h13.59l-4.3-4.3a1 1 0 0 1 0-1.4Z" />
             </svg>
           </a>
-          <button
-            onClick={() =>
-              document.querySelector("#imoveis")?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="btn btn-outline"
-          >
+          <Link href="/imoveis" className="btn btn-outline">
             Ver imóveis
-          </button>
+          </Link>
         </div>
 
         <div

@@ -1,9 +1,11 @@
+import Link from "next/link";
 import Reveal from "@/components/Reveal";
-import PropertyCard from "@/components/PropertyCard";
-import { PROPERTIES } from "@/lib/properties";
-import { SITE } from "@/lib/site";
+import RealPropertyCard from "@/components/RealPropertyCard";
+import { getFeaturedProperties } from "@/lib/realProperties";
 
-export default function FeaturedProperties() {
+export default async function FeaturedProperties() {
+  const properties = await getFeaturedProperties(6);
+
   return (
     <section id="imoveis" className="relative bg-abyss px-5 py-24 sm:px-8 lg:py-32">
       <div className="divider-glow absolute inset-x-0 top-0" />
@@ -16,21 +18,26 @@ export default function FeaturedProperties() {
               <span className="text-blue-500">O próximo pode ser o seu.</span>
             </h2>
           </div>
-          <a
-            href={`${SITE.whatsapp}?text=Ol%C3%A1!%20Quero%20ver%20todos%20os%20im%C3%B3veis%20dispon%C3%ADveis.`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-outline"
-          >
+          <Link href="/imoveis" className="btn btn-outline">
             Ver portfólio completo
-          </a>
+          </Link>
         </Reveal>
 
-        <Reveal stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {PROPERTIES.map((p) => (
-            <PropertyCard key={p.id} p={p} />
-          ))}
-        </Reveal>
+        {properties.length > 0 ? (
+          <Reveal stagger className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {properties.map((p) => (
+              <RealPropertyCard key={p.id} p={p} />
+            ))}
+          </Reveal>
+        ) : (
+          <div className="mt-14 rounded-2xl border border-line bg-panel/60 py-16 text-center">
+            <p className="font-display text-xl font-semibold text-ink">Novos imóveis em breve</p>
+            <p className="mt-2 text-muted">Fale com a gente e conte o que você procura.</p>
+            <Link href="/imoveis" className="btn btn-primary mt-6">
+              Ver imóveis
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

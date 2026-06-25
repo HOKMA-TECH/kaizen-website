@@ -10,6 +10,9 @@ import FinalCTA from "@/components/sections/FinalCTA";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/Footer";
 
+// destaques reais com revalidação a cada 5 min (ISR)
+export const revalidate = 300;
+
 export default function Home() {
   return (
     <main className="relative">
