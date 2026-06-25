@@ -84,7 +84,7 @@ export default function FinalCTA() {
         </div>
 
         <p className="mt-8 text-sm text-faint">
-          Atendimento rápido e sem compromisso · {SITE.creci}
+          Atendimento rápido e seguro · {SITE.creci}
         </p>
       </div>
     </section>
