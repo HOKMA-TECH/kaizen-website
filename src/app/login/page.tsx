@@ -4,8 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import Turnstile from "react-turnstile";
 import { createClient } from "@/lib/supabase/browser";
+import { SiteBotChallenge, getSiteTurnstileSiteKey } from "@/components/SiteBotChallenge";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,17 +13,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
-  const [captchaReady, setCaptchaReady] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState("");
 
-  const turnstileSiteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const turnstileSiteKey = getSiteTurnstileSiteKey();
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (turnstileSiteKey && (!captchaToken || captchaToken.length < 20)) {
-      setError("Complete o desafio de segurança (captcha) para continuar.");
+    if (!captchaToken || captchaToken.length < 20) {
+      setError("Complete o desafio de segurança para continuar.");
       return;
     }
 
@@ -32,19 +31,15 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
-      options: { captchaToken: captchaToken ?? undefined },
+      options: { captchaToken },
     });
     setLoading(false);
 
     if (error) {
       const m = (error.message || "").toLowerCase();
+      setCaptchaToken("");
       if (m.includes("captcha")) {
-        setCaptchaToken(null);
-        setError("Verificação de segurança expirada. Refaça o captcha e tente novamente.");
-      } else if (m.includes("not confirmed") || m.includes("confirm")) {
-        setError(
-          "Usuário ainda não confirmado. No Supabase (Authentication → Users), confirme este e-mail (ou recrie marcando “Auto Confirm User”)."
-        );
+        setError("Verificação de segurança expirada. Refaça o desafio e tente novamente.");
       } else if (m.includes("invalid login") || m.includes("credentials")) {
         setError("E-mail ou senha incorretos.");
       } else if (m.includes("too many")) {
@@ -106,25 +101,7 @@ export default function LoginPage() {
             />
           </div>
 
-          {turnstileSiteKey ? (
-            <div className="flex justify-center pt-1">
-              <Turnstile
-                sitekey={turnstileSiteKey}
-                theme="dark"
-                onLoad={() => setCaptchaReady(true)}
-                onVerify={(token) => setCaptchaToken(token)}
-                onExpire={() => setCaptchaToken(null)}
-                onError={() => {
-                  setCaptchaReady(false);
-                  setCaptchaToken(null);
-                }}
-              />
-            </div>
-          ) : (
-            <p className="text-xs text-amber-400">
-              Captcha não configurado: defina NEXT_PUBLIC_TURNSTILE_SITE_KEY nas variáveis de ambiente.
-            </p>
-          )}
+          <SiteBotChallenge onToken={setCaptchaToken} />
 
           {error && (
             <p className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-2.5 text-sm text-red-300">
@@ -134,15 +111,11 @@ export default function LoginPage() {
 
           <button
             type="submit"
-            disabled={loading || (Boolean(turnstileSiteKey) && (!captchaReady || !captchaToken))}
+            disabled={loading || (Boolean(turnstileSiteKey) && !captchaToken)}
             className="btn btn-primary w-full justify-center disabled:opacity-60"
           >
             {loading ? "Entrando..." : "Entrar"}
           </button>
-
-          {turnstileSiteKey && !captchaReady && (
-            <p className="text-center text-xs text-amber-400">Carregando verificação de segurança...</p>
-          )}
         </form>
 
         <Link href="/" className="mt-6 block text-center text-sm text-muted transition-colors hover:text-ink">
